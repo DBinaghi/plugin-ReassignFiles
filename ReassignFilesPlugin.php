@@ -13,6 +13,7 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
 		'install',
 		'uninstall',
 		'define_acl',
+		'admin_head',
 		'admin_items_form_files',
 		'after_save_item',
 		'config_form',
@@ -35,24 +36,24 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	}
 
 	/**
-	* Install the plugin.
-	*/
+	 * Install the plugin.
+	 */
 	public function hookInstall() {
 
 		SELF::_installOptions();
 	}
 
 	/**
-	* Uninstall the plugin.
-	*/
+	 * Uninstall the plugin.
+	 */
 	public function hookUninstall() {
 
 		SELF::_uninstallOptions();
 	}
 
 	/*
-	* Define ACL entry for reassignfiles controller.
-	*/
+	 * Define ACL entry for reassignfiles controller.
+	 */
 	public function hookDefineAcl($args)
 	{
 		$acl = $args['acl'];
@@ -61,13 +62,22 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
 		$acl->add($indexResource);
 
 		$acl->allow(array('super', 'admin'), 'ReassignFiles_Index', 'index');
+	}
 
+    /**
+     * Queue javascript files when admin section loads
+     *
+     *@return void
+     */
+	public function hookAdminHead($args)
+	{
+		queue_js_file('ReassignFiles');
 	}
 
 	/**
-	* Display the reassignfiles list on the	item form.
-	* This simply adds a heading to the output
-	*/
+	 * Display the reassignfiles list on the	item form.
+	 * This simply adds a heading to the output
+	 */
 	public function hookAdminItemsFormFiles()
 	{
 		$localReassign = (int)(boolean) get_option('reassign_files_local_reassign');
@@ -96,8 +106,8 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	}
 
 	/**
-	* Display the plugin configuration form.
-	*/
+	 * Display the plugin configuration form.
+	 */
 	public static function hookConfigForm() {
 		$localReassign = (int)(boolean) get_option('reassign_files_local_reassign');
 		$showFileDetails = (int)(boolean) get_option('reassign_files_show_file_details');
@@ -106,8 +116,8 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	}
 
 	/**
-	* Handle the plugin configuration form.
-	*/
+	 * Handle the plugin configuration form.
+	 */
 	public static function hookConfig() {
 		$localReassign = (int)(boolean) $_POST['reassign_files_local_reassign'];
 		set_option('reassign_files_local_reassign', $localReassign);
@@ -120,8 +130,8 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	}
 
 	/**
-	* reassignfiles admin navigation filter
-	*/
+	 * reassignfiles admin navigation filter
+	 */
 	public function filterAdminNavigationMain($nav)
 	{
 		if (is_allowed('ReassignFiles_Index', 'index')) {
@@ -139,8 +149,8 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	}
 
 	/**
-	* Returns all fileNames as data source for the multi-select box
-	*/
+	 * Returns all fileNames as data source for the multi-select box
+	 */
 	public static function reassignFiles_getFileNames($filterItemID = 0) {
 		$filterItemId = intval($filterItemID);
 		$filterItemInfix = ( $filterItemId > 0 ? "AND f.item_id <> $filterItemID" : "" );
@@ -178,8 +188,8 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	}
 
 	/**
-	* Do the actual work: Reassign the $files (specified by their file IDs towards one target item ID
-	*/
+	 * Do the actual work: Reassign the $files (specified by their file IDs towards one target item ID
+	 */
 	public static function reassignFiles_reassignFiles($itemID, $files) {
 		$errMsg = false;
 		$itemID = intval($itemID); // typecast / filter item ID for strange characters
@@ -226,8 +236,8 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	}
 
 	/**
-	* If applicable, check if items who just had files assigned to other items are now "empty" and, if so, delete them
-	*/
+	 * If applicable, check if items who just had files assigned to other items are now "empty" and, if so, delete them
+	 */
 	static function reassignFiles_deleteOrphans($potentialOrphans = false) {
 		$db = get_db();
 
@@ -283,8 +293,8 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	}
 
 	/**
-	* Checks if ItemRelations is installed, so it could be taken into account during orphaned items search
-	*/
+	 * Checks if ItemRelations is installed, so it could be taken into account during orphaned items search
+	 */
 	static function reassignFiles_withItemRelations() {
 		$db = get_db();
 		$sql = "SELECT 1 FROM `$db->ItemRelationsRelations` LIMIT 1";
