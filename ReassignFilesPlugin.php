@@ -82,7 +82,7 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	{
 		$localReassign = (int)(boolean) get_option('reassign_files_local_reassign');
 		if ($localReassign) {
-			echo '<h3>' . __('Add Files from Other Items') . '</h3>';
+			echo '<h3>' . __('Add Files from other Items') . '</h3>';
 			$itemId = metadata('item', 'id');
 			$fileNames = SELF::reassignFiles_getFileNames($itemId); // from helpers/ReassignFilesFunctions.php
 			echo common('reassignfileslist', array( "fileNames" => $fileNames ), 'index');
