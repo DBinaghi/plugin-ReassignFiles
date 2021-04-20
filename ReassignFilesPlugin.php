@@ -111,7 +111,7 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	public static function hookConfig() {
 		$localReassign = (int)(boolean) $_POST['reassign_files_local_reassign'];
 		set_option('reassign_files_local_reassign', $localReassign);
-		$localReassign = (int)(boolean) $_POST['reassign_files_show_file_details'];
+		$showFileDetails = (int)(boolean) $_POST['reassign_files_show_file_details'];
 		set_option('reassign_files_show_file_details', $showFileDetails);
 		$deleteOrphanedItems = (int)(boolean) $_POST['reassign_files_delete_orphaned_items'];
 		set_option('reassign_files_delete_orphaned_items', $deleteOrphanedItems);
@@ -144,6 +144,7 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
 	public static function reassignFiles_getFileNames($filterItemID = 0) {
 		$filterItemId = intval($filterItemID);
 		$filterItemInfix = ( $filterItemId > 0 ? "AND f.item_id <> $filterItemID" : "" );
+		$showFileDetails = (int)(boolean) get_option('reassign_files_show_file_details');
 
 		$fileNames = array();
 		$db = get_db();
@@ -169,9 +170,9 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
 		}
 
 		foreach ($files as $file) {
-			$fileNames[$file['fileId']] = $file['original_filename'] .
-				' [item #' . $file['itemId'] . ', ' . $itemNames[$file['itemId']] .
-				' | file #' . $file['fileId'] . ']';
+			$fileNames[$file['fileId']] = $file['original_filename'] . ' [' .
+				($showFileDetails ? 'item #' . $file['itemId'] . ', ' . $itemNames[$file['itemId']] . ' | ' : '') .
+				'file #' . $file['fileId'] . ']';
 		}
 		return $fileNames;
 	}
