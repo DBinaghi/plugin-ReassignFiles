@@ -22,7 +22,7 @@ See online issues on the <a href="https://github.com/DBinaghi/plugin-ReassignFil
 ## Copyright
 Copyright [Gero Zahn], 2015-2021
 
-Copyright [Daniele Binaghi], 2021
+Copyright [Daniele Binaghi], 2021-2022
 
 ## Acknowledgments
 The original plugin was developed by [Gero Zahn].
