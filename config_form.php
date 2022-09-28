@@ -34,15 +34,15 @@
 	<div class="inputs five columns omega">
 		<p class="explanation">
 			<?php
-			echo __('Check this if you want to automatically delete items that become "orphaned" after reassigning their files to other items. '.
-					'This will affect only those items that afterwards:'.
+			echo __('Check this if you want to automatically delete Items that become "orphaned" after reassigning their files to other Items'.
+					'(often the case of files that were bulk-added through the "Dropbox" plugin). '.
+					'This will affect only those Items that afterwards:'.
 					'<ul>'.
 					'<li>do not have an Item Type assigned,</li>'.
 					'<li>do not have any associated Files left,</li>'.
 					'<li>are neither subject nor object in a relationship (in case the "Item Relations" plugin is installed),</li>'.
 					'<li>and contain at the most a title, but no other metadata whatsoever (i.e. entered text).</li>'.
-					'</ul>'.
-					'<em>Please note:</em> this is often the case of files that were bulk-added through the "Dropbox" plugin.');
+					'</ul>');
 			?>
 		</p>
 		<?php echo get_view()->formCheckbox('reassign_files_delete_orphaned_items', null, array('checked' => $deleteOrphanedItems)); ?>
@@ -57,8 +57,8 @@
 	<div class="inputs five columns omega">
 		<p class="explanation">
 			<?php
-			echo __('Check this to initiate the search for orphaned items and their deletion <em>now</em> and exactly <em>once</em>.<br>'.
-					'<em>Please note:</em> this action will be carried out as soon as you click on "Save Changes".');
+			echo __('Check this to initiate the search for orphaned Items and their deletion <b>now</b> and exactly <b>once</b>. '.
+					'Please note: this action will be carried out as soon as you click on "Save Changes".');
 			?>
 		</p>
 		<?php echo get_view()->formCheckbox('reassign_files_delete_orphaned_items_now', null, array('checked' => false)); ?>
